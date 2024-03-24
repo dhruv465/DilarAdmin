@@ -364,7 +364,7 @@
         </nav>
     </div>
     <!-- End Sidebar -->
- <!---
+    <!---
     /////////////////////////////////////////////////
     ////////////////////////////////////////////////
     //////////////////////////////////////////////
@@ -381,258 +381,258 @@
     <!-- Chart Section -->
 
     <?php
-// Database conn
-include 'dbconnection.php';
+    // Database conn
+    include 'dbconnection.php';
 
-// Fetch the count of each disposition value
-$query = "SELECT Disposition, COUNT(*) AS Count FROM FormData GROUP BY Disposition";
-$result = $conn->query($query);
+    // Fetch the count of each disposition value
+    $query = "SELECT Disposition, COUNT(*) AS Count FROM FormData GROUP BY Disposition";
+    $result = $conn->query($query);
 
-// Check if query was successful
-if ($result) {
-    // Initialize an array to store the counts
-    $counts = array();
+    // Check if query was successful
+    if ($result) {
+        // Initialize an array to store the counts
+        $counts = array();
 
-    // Fetch counts and store in the array
-    while ($row = $result->fetch_assoc()) {
-        $counts[$row['Disposition']] = $row['Count'];
+        // Fetch counts and store in the array
+        while ($row = $result->fetch_assoc()) {
+            $counts[$row['Disposition']] = $row['Count'];
+        }
+
+        // Display counts in the cards
+    ?>
+        <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                <!-- Card for Sales -->
+                <!-- Code for Sales card here -->
+                <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-slate-900 dark:border-gray-800">
+                    <div class="p-4 md:p-5 flex gap-x-4">
+                        <div class="flex-shrink-0 flex justify-center items-center size-[46px] bg-gray-100 rounded-lg dark:bg-gray-800">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#636363" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-credit-card">
+                                <rect width="20" height="14" x="2" y="5" rx="2" />
+                                <line x1="2" x2="22" y1="10" y2="10" />
+                            </svg>
+                        </div>
+                        <div class="grow">
+                            <div class="flex items-center gap-x-2">
+                                <p class="text-xs uppercase tracking-wide text-gray-500">
+                                    Sales
+                                </p>
+                                <div class="hs-tooltip">
+                                    <div class="hs-tooltip-toggle">
+                                        <svg class="flex-shrink-0 size-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10" />
+                                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                                            <path d="M12 17h.01" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-1 flex items-center gap-x-2">
+                                <h3 class="text-xl sm:text-2xl font-medium text-gray-800 dark:text-gray-200">
+                                    <?php echo isset($counts['Sales']) ? $counts['Sales'] : 0; ?>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card for Not Interested -->
+                <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-slate-900 dark:border-gray-800">
+                    <div class="p-4 md:p-5 flex gap-x-4">
+                        <div class="flex-shrink-0 flex justify-center items-center size-[46px] bg-gray-100 rounded-lg dark:bg-gray-800">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#636363" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-x">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="m15 9-6 6" />
+                                <path d="m9 9 6 6" />
+                            </svg>
+                        </div>
+                        <div class="grow">
+                            <div class="flex items-center gap-x-2">
+                                <p class="text-xs uppercase tracking-wide text-gray-500">
+                                    Not Interested
+                                </p>
+                                <div class="hs-tooltip">
+                                    <div class="hs-tooltip-toggle">
+                                        <svg class="flex-shrink-0 size-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10" />
+                                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                                            <path d="M12 17h.01" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-1 flex items-center gap-x-2">
+                                <h3 class="text-xl font-medium text-gray-800 dark:text-gray-200">
+                                    <?php echo isset($counts['Not Interested']) ? $counts['Not Interested'] : 0; ?>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Card for Not Interested -->
+                <!-- Card -->
+                <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-slate-900 dark:border-gray-800">
+                    <div class="p-4 md:p-5 flex gap-x-4">
+                        <div class="flex-shrink-0 flex justify-center items-center size-[46px] bg-gray-100 rounded-lg dark:bg-gray-800">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#636363" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone-forwarded">
+                                <polyline points="18 2 22 6 18 10" />
+                                <line x1="14" x2="22" y1="6" y2="6" />
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                            </svg>
+                        </div>
+
+                        <div class="grow">
+                            <div class="flex items-center gap-x-2">
+                                <p class="text-xs uppercase tracking-wide text-gray-500">
+                                    Call Back
+                                </p>
+                                <div class="hs-tooltip">
+                                    <div class="hs-tooltip-toggle">
+                                        <svg class="flex-shrink-0 size-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10" />
+                                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                                            <path d="M12 17h.01" />
+                                        </svg>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-1 flex items-center gap-x-2">
+                                <h3 class="text-xl sm:text-2xl font-medium text-gray-800 dark:text-gray-200">
+                                    <?php echo isset($counts['Call Back']) ? $counts['Call Back'] : 0; ?>
+                                </h3>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Card -->
+
+                <!-- Card -->
+                <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-slate-900 dark:border-gray-800">
+                    <div class="p-4 md:p-5 flex gap-x-4">
+                        <div class="flex-shrink-0 flex justify-center items-center size-[46px] bg-gray-100 rounded-lg dark:bg-gray-800">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#636363" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ban">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="m4.9 4.9 14.2 14.2" />
+                            </svg>
+                        </div>
+
+                        <div class="grow">
+                            <div class="flex items-center gap-x-2">
+                                <p class="text-xs uppercase tracking-wide text-gray-500">
+                                    Wrong Number
+                                </p>
+                                <div class="hs-tooltip">
+                                    <div class="hs-tooltip-toggle">
+                                        <svg class="flex-shrink-0 size-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10" />
+                                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                                            <path d="M12 17h.01" />
+                                        </svg>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-1 flex items-center gap-x-2">
+                                <h3 class="text-xl font-medium text-gray-800 dark:text-gray-200">
+                                    <?php echo isset($counts['Wrong Number']) ? $counts['Wrong Number'] : 0; ?>
+                                </h3>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <!-- End Card -->
+                <!-- Card -->
+                <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-slate-900 dark:border-gray-800">
+                    <div class="p-4 md:p-5 flex gap-x-4">
+                        <div class="flex-shrink-0 flex justify-center items-center size-[46px] bg-gray-100 rounded-lg dark:bg-gray-800">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#636363" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-headset">
+                                <path d="M3 11h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5Zm0 0a9 9 0 1 1 18 0m0 0v5a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3Z" />
+                                <path d="M21 16v2a4 4 0 0 1-4 4h-5" />
+                            </svg>
+                        </div>
+
+                        <div class="grow">
+                            <div class="flex items-center gap-x-2">
+                                <p class="text-xs uppercase tracking-wide text-gray-500">
+                                    Follow-Up
+                                </p>
+                                <div class="hs-tooltip">
+                                    <div class="hs-tooltip-toggle">
+                                        <svg class="flex-shrink-0 size-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10" />
+                                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                                            <path d="M12 17h.01" />
+                                        </svg>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-1 flex items-center gap-x-2">
+                                <h3 class="text-xl font-medium text-gray-800 dark:text-gray-200">
+                                    <?php echo isset($counts['Follow-Up']) ? $counts['Follow-Up'] : 0; ?>
+                                </h3>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <!-- End Card -->
+                <!-- Card -->
+                <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-slate-900 dark:border-gray-800">
+                    <div class="p-4 md:p-5 flex gap-x-4">
+                        <div class="flex-shrink-0 flex justify-center items-center size-[46px] bg-gray-100 rounded-lg dark:bg-gray-800">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#636363" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-audio-lines">
+                                <path d="M2 10v3" />
+                                <path d="M6 6v11" />
+                                <path d="M10 3v18" />
+                                <path d="M14 8v7" />
+                                <path d="M18 5v13" />
+                                <path d="M22 10v3" />
+                            </svg>
+                        </div>
+
+                        <div class="grow">
+                            <div class="flex items-center gap-x-2">
+                                <p class="text-xs uppercase tracking-wide text-gray-500">
+                                    Ringing
+                                </p>
+                                <div class="hs-tooltip">
+                                    <div class="hs-tooltip-toggle">
+                                        <svg class="flex-shrink-0 size-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10" />
+                                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                                            <path d="M12 17h.01" />
+                                        </svg>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-1 flex items-center gap-x-2">
+                                <h3 class="text-xl font-medium text-gray-800 dark:text-gray-200">
+                                    <?php echo isset($counts['Ringing']) ? $counts['Ringing'] : 0; ?>
+                                </h3>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- End Card -->
+            </div>
+            <!-- End Grid -->
+        </div>
+    <?php
+    } else {
+        // Query failed, handle the error
+        echo "Error: " . $conn->error;
     }
 
-    // Display counts in the cards
+    // Close the database conn
+    $conn->close();
     ?>
-    <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            <!-- Card for Sales -->
-            <!-- Code for Sales card here -->
-            <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-slate-900 dark:border-gray-800">
-                <div class="p-4 md:p-5 flex gap-x-4">
-                    <div class="flex-shrink-0 flex justify-center items-center size-[46px] bg-gray-100 rounded-lg dark:bg-gray-800">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#636363" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-credit-card">
-                            <rect width="20" height="14" x="2" y="5" rx="2" />
-                            <line x1="2" x2="22" y1="10" y2="10" />
-                        </svg>
-                    </div>
-                    <div class="grow">
-                        <div class="flex items-center gap-x-2">
-                            <p class="text-xs uppercase tracking-wide text-gray-500">
-                                Sales
-                            </p>
-                            <div class="hs-tooltip">
-                                <div class="hs-tooltip-toggle">
-                                    <svg class="flex-shrink-0 size-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="12" r="10" />
-                                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-                                        <path d="M12 17h.01" />
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-1 flex items-center gap-x-2">
-                            <h3 class="text-xl sm:text-2xl font-medium text-gray-800 dark:text-gray-200">
-                                <?php echo isset($counts['Sales']) ? $counts['Sales'] : 0; ?>
-                            </h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Card for Not Interested -->
-            <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-slate-900 dark:border-gray-800">
-                <div class="p-4 md:p-5 flex gap-x-4">
-                    <div class="flex-shrink-0 flex justify-center items-center size-[46px] bg-gray-100 rounded-lg dark:bg-gray-800">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#636363" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-x">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="m15 9-6 6" />
-                            <path d="m9 9 6 6" />
-                        </svg>
-                    </div>
-                    <div class="grow">
-                        <div class="flex items-center gap-x-2">
-                            <p class="text-xs uppercase tracking-wide text-gray-500">
-                                Not Interested
-                            </p>
-                            <div class="hs-tooltip">
-                                <div class="hs-tooltip-toggle">
-                                    <svg class="flex-shrink-0 size-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="12" r="10" />
-                                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-                                        <path d="M12 17h.01" />
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-1 flex items-center gap-x-2">
-                            <h3 class="text-xl font-medium text-gray-800 dark:text-gray-200">
-                                <?php echo isset($counts['Not Interested']) ? $counts['Not Interested'] : 0; ?>
-                            </h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- End Card for Not Interested -->
- <!-- Card -->
-            <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-slate-900 dark:border-gray-800">
-                <div class="p-4 md:p-5 flex gap-x-4">
-                    <div class="flex-shrink-0 flex justify-center items-center size-[46px] bg-gray-100 rounded-lg dark:bg-gray-800">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#636363" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone-forwarded">
-                            <polyline points="18 2 22 6 18 10" />
-                            <line x1="14" x2="22" y1="6" y2="6" />
-                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                        </svg>
-                    </div>
-
-                    <div class="grow">
-                        <div class="flex items-center gap-x-2">
-                            <p class="text-xs uppercase tracking-wide text-gray-500">
-                                Call Back
-                            </p>
-                            <div class="hs-tooltip">
-                                <div class="hs-tooltip-toggle">
-                                    <svg class="flex-shrink-0 size-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="12" r="10" />
-                                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-                                        <path d="M12 17h.01" />
-                                    </svg>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-1 flex items-center gap-x-2">
-                            <h3 class="text-xl sm:text-2xl font-medium text-gray-800 dark:text-gray-200">
-                                <?php echo isset($counts['Call Back']) ? $counts['Call Back'] : 0; ?>
-                            </h3>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- End Card -->
-
-            <!-- Card -->
-            <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-slate-900 dark:border-gray-800">
-                <div class="p-4 md:p-5 flex gap-x-4">
-                    <div class="flex-shrink-0 flex justify-center items-center size-[46px] bg-gray-100 rounded-lg dark:bg-gray-800">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#636363" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ban">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="m4.9 4.9 14.2 14.2" />
-                        </svg>
-                    </div>
-
-                    <div class="grow">
-                        <div class="flex items-center gap-x-2">
-                            <p class="text-xs uppercase tracking-wide text-gray-500">
-                                Wrong Number
-                            </p>
-                            <div class="hs-tooltip">
-                                <div class="hs-tooltip-toggle">
-                                    <svg class="flex-shrink-0 size-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="12" r="10" />
-                                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-                                        <path d="M12 17h.01" />
-                                    </svg>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-1 flex items-center gap-x-2">
-                            <h3 class="text-xl font-medium text-gray-800 dark:text-gray-200">
-                                <?php echo isset($counts['Wrong Number']) ? $counts['Wrong Number'] : 0; ?>
-                            </h3>
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
-            <!-- End Card -->
-            <!-- Card -->
-            <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-slate-900 dark:border-gray-800">
-                <div class="p-4 md:p-5 flex gap-x-4">
-                    <div class="flex-shrink-0 flex justify-center items-center size-[46px] bg-gray-100 rounded-lg dark:bg-gray-800">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#636363" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-headset">
-                            <path d="M3 11h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5Zm0 0a9 9 0 1 1 18 0m0 0v5a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3Z" />
-                            <path d="M21 16v2a4 4 0 0 1-4 4h-5" />
-                        </svg>
-                    </div>
-
-                    <div class="grow">
-                        <div class="flex items-center gap-x-2">
-                            <p class="text-xs uppercase tracking-wide text-gray-500">
-                                Follow-Up
-                            </p>
-                            <div class="hs-tooltip">
-                                <div class="hs-tooltip-toggle">
-                                    <svg class="flex-shrink-0 size-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="12" r="10" />
-                                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-                                        <path d="M12 17h.01" />
-                                    </svg>
-                                   
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-1 flex items-center gap-x-2">
-                            <h3 class="text-xl font-medium text-gray-800 dark:text-gray-200">
-                                 <?php echo isset($counts['Follow-Up']) ? $counts['Follow-Up'] : 0; ?>
-                            </h3>
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
-            <!-- End Card -->
-            <!-- Card -->
-            <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-slate-900 dark:border-gray-800">
-                <div class="p-4 md:p-5 flex gap-x-4">
-                    <div class="flex-shrink-0 flex justify-center items-center size-[46px] bg-gray-100 rounded-lg dark:bg-gray-800">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#636363" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-audio-lines">
-                            <path d="M2 10v3" />
-                            <path d="M6 6v11" />
-                            <path d="M10 3v18" />
-                            <path d="M14 8v7" />
-                            <path d="M18 5v13" />
-                            <path d="M22 10v3" />
-                        </svg>
-                    </div>
-
-                    <div class="grow">
-                        <div class="flex items-center gap-x-2">
-                            <p class="text-xs uppercase tracking-wide text-gray-500">
-                                Ringing
-                            </p>
-                            <div class="hs-tooltip">
-                                <div class="hs-tooltip-toggle">
-                                    <svg class="flex-shrink-0 size-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="12" r="10" />
-                                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-                                        <path d="M12 17h.01" />
-                                    </svg>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-1 flex items-center gap-x-2">
-                            <h3 class="text-xl font-medium text-gray-800 dark:text-gray-200">
-                                 <?php echo isset($counts['Ringing']) ? $counts['Ringing'] : 0; ?>
-                            </h3>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            <!-- End Card -->
-        </div>
-        <!-- End Grid -->
-    </div>
-    <?php
-} else {
-    // Query failed, handle the error
-    echo "Error: " . $conn->error;
-}
-
-// Close the database conn
-$conn->close();
-?>
 
 
     <!-- End Chart Section -->
