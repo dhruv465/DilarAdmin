@@ -35,23 +35,26 @@
                 </div>
 
                 <div class="hidden sm:block">
-                    <label for="icon" class="sr-only">Search</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-4">
-                            <svg class="flex-shrink-0 size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="11" cy="11" r="8" />
-                                <path d="m21 21-4.3-4.3" />
-                            </svg>
+                    <form method="POST" action="">
+                        <label for="search" class="sr-only">Search</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-4">
+                                <svg class="flex-shrink-0 size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <path d="m21 21-4.3-4.3" />
+                                </svg>
+                            </div>
+                            <input type="text" id="search" name="search" class="py-2 px-4 ps-11 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" placeholder="Search">
                         </div>
-                        <input type="text" id="icon" name="icon" class="py-2 px-4 ps-11 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" placeholder="Search">
-                    </div>
+
+                    </form>
                 </div>
 
                 <div class="flex flex-row items-center justify-end gap-2">
                     <div class="hs-dropdown relative inline-flex [--placement:bottom-right]">
                         <button id="hs-dropdown-with-header" type="button" class="w-[2.375rem] h-[2.375rem] inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
                             <img class="inline-block size-[38px] rounded-full ring-2 ring-white dark:ring-gray-800" src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=320&h=320&q=80" alt="Image Description">
-                        </button> 
+                        </button>
                     </div>
                 </div>
             </div>
@@ -132,36 +135,76 @@
     // Database conn
     include 'dbconnection.php';
 
-    // Fetch the count of each disposition value
-    $query = "SELECT Disposition, COUNT(*) AS Count FROM FormData GROUP BY Disposition";
-    $result = $conn->query($query);
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Process the form data and sanitize input
+        $search = isset($_POST['search']) ? $_POST['search'] : '';
+        $search = $conn->real_escape_string($search);
 
-    // Check if query was successful
-    if ($result) {
-        // Initialize an array to store the counts
-        $counts = array();
+        // Query to fetch counts for the searched username
+        $query = "SELECT Disposition, COUNT(*) AS Count FROM FormData WHERE Username = '$search' GROUP BY Disposition";
+        $result = $conn->query($query);
 
-        // Fetch counts and store in the array
-        while ($row = $result->fetch_assoc()) {
-            $counts[$row['Disposition']] = $row['Count'];
+        // Check if query was successful
+        if ($result) {
+            // Initialize an array to store the counts
+            $counts = array();
+
+            // Fetch counts and store in the array
+            while ($row = $result->fetch_assoc()) {
+                $counts[$row['Disposition']] = $row['Count'];
+            }
+
+            // Display counts in the cards
+        } else {
+            // Query failed, handle the error
+            echo "Error: " . $conn->error;
         }
+    } else {
+        // Fetch the count of each disposition value for all users
+        $query = "SELECT Disposition, COUNT(*) AS Count FROM FormData GROUP BY Disposition";
+        $result = $conn->query($query);
 
-        // Display counts in the cards
+        // Check if query was successful
+        if ($result) {
+            // Initialize an array to store the counts
+            $counts = array();
+
+            // Fetch counts and store in the array
+            while ($row = $result->fetch_assoc()) {
+                $counts[$row['Disposition']] = $row['Count'];
+            }
+
+            // Display counts in the cards
+        } else {
+            // Query failed, handle the error
+            echo "Error: " . $conn->error;
+        }
+    }
+
+    // Close the database conn
+    $conn->close();
     ?>
-      <div class="w-full pt-10 px-4 sm:px-6 md:px-8 lg:ps-72">
+
+
+    <div class="w-full pt-10 px-4 sm:px-6 md:px-8 lg:ps-72">
         <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
             <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+
                 <!-- Card for Sales -->
-                <!-- Code for Sales card here -->
                 <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-slate-900 dark:border-gray-800">
+                    <!-- Card content here -->
                     <div class="p-4 md:p-5 flex gap-x-4">
+                        <!-- Card icon -->
                         <div class="flex-shrink-0 flex justify-center items-center size-[46px] bg-gray-100 rounded-lg dark:bg-gray-800">
+                            <!-- Icon SVG -->
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#636363" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-credit-card">
                                 <rect width="20" height="14" x="2" y="5" rx="2" />
                                 <line x1="2" x2="22" y1="10" y2="10" />
                             </svg>
                         </div>
+                        <!-- Card details -->
                         <div class="grow">
+                            <!-- Card title and tooltip -->
                             <div class="flex items-center gap-x-2">
                                 <p class="text-xs uppercase tracking-wide text-gray-500">
                                     Sales
@@ -176,6 +219,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- Card number -->
                             <div class="mt-1 flex items-center gap-x-2">
                                 <h3 class="text-xl sm:text-2xl font-medium text-gray-800 dark:text-gray-200">
                                     <?php echo isset($counts['Sales']) ? $counts['Sales'] : 0; ?>
@@ -184,6 +228,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- Card for Not Interested -->
                 <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-slate-900 dark:border-gray-800">
                     <div class="p-4 md:p-5 flex gap-x-4">
@@ -521,20 +566,11 @@
             </div>
             <!-- End Grid -->
         </div>
-      
-    <?php
-    } else {
-        // Query failed, handle the error
-        echo "Error: " . $conn->error;
-    }
-
-    // Close the database conn
-    $conn->close();
-    ?>
 
 
-    <!-- End Chart Section -->
-    <!---
+
+        <!-- End Chart Section -->
+        <!---
     /////////////////////////////////////////////////
     ////////////////////////////////////////////////
     //////////////////////////////////////////////
@@ -549,224 +585,224 @@
     //////////////////////////////////////////////
     ----->
 
-    <!-- Table Section -->
-    <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
-        <!-- Card -->
-        <div class="flex flex-col">
-            <div class="-m-1.5 overflow-x-auto">
-                <div class="p-1.5 min-w-full inline-block align-middle">
-                    <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden dark:bg-slate-900 dark:border-gray-700">
-                        <!-- Header -->
-                        <div class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200 dark:border-gray-700">
-                            <div>
-                                <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">
-                                    Users
-                                </h2>
+        <!-- Table Section -->
+        <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
+            <!-- Card -->
+            <div class="flex flex-col">
+                <div class="-m-1.5 overflow-x-auto">
+                    <div class="p-1.5 min-w-full inline-block align-middle">
+                        <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden dark:bg-slate-900 dark:border-gray-700">
+                            <!-- Header -->
+                            <div class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200 dark:border-gray-700">
+                                <div>
+                                    <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">
+                                        Users
+                                    </h2>
 
-                            </div>
-                            <div>
-                                <div class="inline-flex gap-x-2">
-                                    <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#">
-                                        <svg class="flex-shrink-0 size-3" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                            <path d="M2.63452 7.50001L13.6345 7.5M8.13452 13V2" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                                        </svg>
-                                        Add user
-                                    </a>
+                                </div>
+                                <div>
+                                    <div class="inline-flex gap-x-2">
+                                        <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#">
+                                            <svg class="flex-shrink-0 size-3" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                                <path d="M2.63452 7.50001L13.6345 7.5M8.13452 13V2" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                                            </svg>
+                                            Add user
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- End Header -->
-                        <div id="medium-modal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                            <div class="relative w-full max-w-lg max-h-full">
-                                <!-- Modal content -->
-                                <main class="w-full max-w-md mx-auto p-6">
-                                    <div class="mt-7 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700">
-                                        <div class="p-4 sm:p-7">
-                                            <div class="text-center">
-                                                <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">Forgot password?</h1>
+                            <!-- End Header -->
+                            <div id="medium-modal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                <div class="relative w-full max-w-lg max-h-full">
+                                    <!-- Modal content -->
+                                    <main class="w-full max-w-md mx-auto p-6">
+                                        <div class="mt-7 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700">
+                                            <div class="p-4 sm:p-7">
+                                                <div class="text-center">
+                                                    <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">Forgot password?</h1>
 
-                                            </div>
+                                                </div>
 
-                                            <div class="mt-5">
-                                                <!-- Form -->
-                                                <form>
-                                                    <div class="grid gap-y-4">
-                                                        <!-- Form Group -->
-                                                        <div>
-                                                            <label for="text" class="block text-sm mb-2 dark:text-white">New Password</label>
-                                                            <div class="relative">
-                                                                <input type="text" id="text" name="text" class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" required aria-describedby="email-error">
-                                                                <div class="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
-                                                                    <svg class="size-5 text-red-500" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
-                                                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-                                                                    </svg>
+                                                <div class="mt-5">
+                                                    <!-- Form -->
+                                                    <form>
+                                                        <div class="grid gap-y-4">
+                                                            <!-- Form Group -->
+                                                            <div>
+                                                                <label for="text" class="block text-sm mb-2 dark:text-white">New Password</label>
+                                                                <div class="relative">
+                                                                    <input type="text" id="text" name="text" class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" required aria-describedby="email-error">
+                                                                    <div class="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
+                                                                        <svg class="size-5 text-red-500" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+                                                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                                                                        </svg>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <!-- End Form Group -->
+                                                            <!-- End Form Group -->
 
-                                                        <button type="submit" class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">Reset password</button>
-                                                    </div>
-                                                </form>
-                                                <!-- End Form -->
+                                                            <button type="submit" class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">Reset password</button>
+                                                        </div>
+                                                    </form>
+                                                    <!-- End Form -->
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </main>
+                                    </main>
+                                </div>
                             </div>
-                        </div>
-                        <!-- Table -->
-                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                            <thead class="bg-gray-50 dark:bg-slate-800">
-                                <tr>
-                                    <th scope="col" class="ps-6 py-3 text-start">
-                                        <div class="flex items-center gap-x-2">
-                                            <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
-                                                userid
-                                            </span>
-                                        </div>
-                                    </th>
+                            <!-- Table -->
+                            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                <thead class="bg-gray-50 dark:bg-slate-800">
+                                    <tr>
+                                        <th scope="col" class="ps-6 py-3 text-start">
+                                            <div class="flex items-center gap-x-2">
+                                                <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
+                                                    userid
+                                                </span>
+                                            </div>
+                                        </th>
 
-                                    <th scope="col" class="ps-6 lg:ps-3 xl:ps-0 pe-6 py-3 text-start">
-                                        <div class="flex items-center gap-x-2">
-                                            <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
-                                                Username
-                                            </span>
-                                        </div>
-                                    </th>
+                                        <th scope="col" class="ps-6 lg:ps-3 xl:ps-0 pe-6 py-3 text-start">
+                                            <div class="flex items-center gap-x-2">
+                                                <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
+                                                    Username
+                                                </span>
+                                            </div>
+                                        </th>
 
-                                    <th scope="col" class="px-6 py-3 text-start">
-                                        <div class="flex items-center gap-x-2">
-                                            <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
-                                                Password
-                                            </span>
-                                        </div>
-                                    </th>
+                                        <th scope="col" class="px-6 py-3 text-start">
+                                            <div class="flex items-center gap-x-2">
+                                                <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
+                                                    Password
+                                                </span>
+                                            </div>
+                                        </th>
 
-                                    <th scope="col" class="px-6 py-3 text-start">
-                                        <div class="flex items-center gap-x-2">
-                                            <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
-                                                Status
-                                            </span>
-                                        </div>
-                                    </th>
+                                        <th scope="col" class="px-6 py-3 text-start">
+                                            <div class="flex items-center gap-x-2">
+                                                <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
+                                                    Status
+                                                </span>
+                                            </div>
+                                        </th>
 
-                                    <th scope="col" class="px-6 py-3 text-start">
-                                        <div class="flex items-center gap-x-2">
-                                            <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
-                                                Force Log Out
-                                            </span>
-                                        </div>
-                                    </th>
+                                        <th scope="col" class="px-6 py-3 text-start">
+                                            <div class="flex items-center gap-x-2">
+                                                <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
+                                                    Force Log Out
+                                                </span>
+                                            </div>
+                                        </th>
 
-                                    <th scope="col" class="px-6 py-3 text-start">
-                                        <div class="flex items-center gap-x-2">
-                                            <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
-                                                Created
-                                            </span>
-                                        </div>
-                                    </th>
+                                        <th scope="col" class="px-6 py-3 text-start">
+                                            <div class="flex items-center gap-x-2">
+                                                <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
+                                                    Created
+                                                </span>
+                                            </div>
+                                        </th>
 
-                                    <th scope="col" class="px-6 py-3 text-end"></th>
-                                </tr>
-                            </thead>
+                                        <th scope="col" class="px-6 py-3 text-end"></th>
+                                    </tr>
+                                </thead>
 
-                            <?php
-                            include('dbconnection.php');
-                            $query = "SELECT * FROM Users";
-                            $result = mysqli_query($conn, $query);
+                                <?php
+                                include('dbconnection.php');
+                                $query = "SELECT * FROM Users";
+                                $result = mysqli_query($conn, $query);
 
-                            if ($result) {
-                                echo '    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">';
-                                while ($row = mysqli_fetch_assoc($result)) {
-                                    echo '<tr>';
-                                    echo '<td class="size-px whitespace-nowrap">';
-                                    echo '<div class="px-6 py-3">';
-                                    echo          '<span class="text-sm text-gray-500">' . $row['UserID'] . '</span>';
-                                    echo      '</div>';
-                                    echo '</td>';
-                                    echo '<td class="size-px whitespace-nowrap">';
-                                    echo '<div class="ps-6 lg:ps-3 xl:ps-0 pe-6 py-3">';
-                                    echo '<div class="flex items-center gap-x-3">';
-                                   
-                                    echo '<div class="grow">';
-                                    echo '<span class="block text-sm font-semibold text-gray-800 dark:text-gray-200">' . $row['Username'] . '</span>';
-                                    echo '</div>';
-                                    echo '</div>';
-                                    echo '</div>';
-                                    echo '</td>';
+                                if ($result) {
+                                    echo '    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">';
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        echo '<tr>';
+                                        echo '<td class="size-px whitespace-nowrap">';
+                                        echo '<div class="px-6 py-3">';
+                                        echo          '<span class="text-sm text-gray-500">' . $row['UserID'] . '</span>';
+                                        echo      '</div>';
+                                        echo '</td>';
+                                        echo '<td class="size-px whitespace-nowrap">';
+                                        echo '<div class="ps-6 lg:ps-3 xl:ps-0 pe-6 py-3">';
+                                        echo '<div class="flex items-center gap-x-3">';
 
-                                    echo '<td class="h-px w-72 whitespace-nowrap">';
-                                    echo '<div class="px-6 py-3">';
-                                    echo '<span class="block text-sm font-semibold text-gray-800 dark:text-gray-200 ">';
-                                    echo '<button data-modal-target="medium-modal" data-modal-toggle="medium-modal" class="bg-blue-700 p-2 text-white rounded-xl ">Update Password</button>';
-                                    echo '</span>';
-                                    echo '</div>';
-                                    echo '</td>';
-                                    echo '<td class="size-px whitespace-nowrap">';
-                                    echo '<div class="px-6 py-3">';
-                                    echo '<span class="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium ';
-                                    if ($row['SessionActive'] == 1) {
-                                        echo 'bg-teal-100 text-teal-800';
-                                    } else {
-                                        echo 'bg-red-100 text-red-800';
+                                        echo '<div class="grow">';
+                                        echo '<span class="block text-sm font-semibold text-gray-800 dark:text-gray-200">' . $row['Username'] . '</span>';
+                                        echo '</div>';
+                                        echo '</div>';
+                                        echo '</div>';
+                                        echo '</td>';
+
+                                        echo '<td class="h-px w-72 whitespace-nowrap">';
+                                        echo '<div class="px-6 py-3">';
+                                        echo '<span class="block text-sm font-semibold text-gray-800 dark:text-gray-200 ">';
+                                        echo '<button data-modal-target="medium-modal" data-modal-toggle="medium-modal" class="bg-blue-700 p-2 text-white rounded-xl ">Update Password</button>';
+                                        echo '</span>';
+                                        echo '</div>';
+                                        echo '</td>';
+                                        echo '<td class="size-px whitespace-nowrap">';
+                                        echo '<div class="px-6 py-3">';
+                                        echo '<span class="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium ';
+                                        if ($row['SessionActive'] == 1) {
+                                            echo 'bg-teal-100 text-teal-800';
+                                        } else {
+                                            echo 'bg-red-100 text-red-800';
+                                        }
+                                        echo ' rounded-full dark:bg-teal-500/10 dark:text-teal-500">';
+                                        echo '<svg class="size-2.5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">';
+                                        echo '<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />';
+                                        echo '</svg>';
+                                        if ($row['SessionActive'] == 1) {
+                                            echo 'Active';
+                                        } else {
+                                            echo 'Inactive';
+                                        }
+                                        echo '</span>';
+                                        echo '</div>';
+                                        echo '</td>';
+
+                                        echo '<td class="size-px whitespace-nowrap">';
+                                        echo '<div class="px-6 py-3">';
+                                        echo '<div class="flex items-center">';
+                                        // Check if SessionActive is 1, then set the checkbox as checked
+                                        if ($row['SessionActive'] == 1) {
+                                            echo '<input type="checkbox" id="hs-xs-switch" data-userid="' . $row['UserID'] . '" class="relative w-[35px] h-[21px] bg-gray-300 border-transparent text-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:ring-none disabled:opacity-50 disabled:pointer-events-none checked:bg-none checked:text-blue-600 checked:border-blue-600 focus:checked:border-blue-600 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-600 before:inline-block before:size-4 before:bg-white checked:before:bg-blue-200 before:translate-x-0 checked:before:translate-x-full before:rounded-full before:shadow before:transform before:ring-0 before:transition before:ease-in-out before:duration-200 dark:before:bg-gray-400 dark:checked:before:bg-blue-200" checked>';
+                                        } else {
+                                            echo '<input type="checkbox" id="hs-xs-switch" data-userid="' . $row['UserID'] . '" class="relative w-[35px] h-[21px] bg-gray-300 border-transparent text-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:ring-none disabled:opacity-50 disabled:pointer-events-none checked:bg-none checked:text-blue-600 checked:border-blue-600 focus:checked:border-blue-600 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-600 before:inline-block before:size-4 before:bg-white checked:before:bg-blue-200 before:translate-x-0 checked:before:translate-x-full before:rounded-full before:shadow before:transform before:ring-0 before:transition before:ease-in-out before:duration-200 dark:before:bg-gray-400 dark:checked:before:bg-blue-200">';
+                                        }
+                                        echo '</div>';
+                                        echo '</div>';
+                                        echo '</td>';
+
+
+                                        echo   '<td class="size-px whitespace-nowrap">';
+                                        echo      '<div class="px-6 py-3">';
+                                        echo          '<span class="text-sm text-gray-500">' . $row['RegistrationDate'] . '</span>';
+                                        echo      '</div>';
+                                        echo  '</td>';
+                                        echo '<td class="size-px whitespace-nowrap">';
+                                        echo '<div class="px-6 py-1.5">';
+                                        echo '<a class="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#">Edit</a>';
+                                        echo '</div>';
+                                        echo '</td>';
+
+                                        echo '</tr>';
                                     }
-                                    echo ' rounded-full dark:bg-teal-500/10 dark:text-teal-500">';
-                                    echo '<svg class="size-2.5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">';
-                                    echo '<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />';
-                                    echo '</svg>';
-                                    if ($row['SessionActive'] == 1) {
-                                        echo 'Active';
-                                    } else {
-                                        echo 'Inactive';
-                                    }
-                                    echo '</span>';
-                                    echo '</div>';
-                                    echo '</td>';
-
-                                    echo '<td class="size-px whitespace-nowrap">';
-                                    echo '<div class="px-6 py-3">';
-                                    echo '<div class="flex items-center">';
-                                    // Check if SessionActive is 1, then set the checkbox as checked
-                                    if ($row['SessionActive'] == 1) {
-                                        echo '<input type="checkbox" id="hs-xs-switch" data-userid="' . $row['UserID'] . '" class="relative w-[35px] h-[21px] bg-gray-300 border-transparent text-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:ring-none disabled:opacity-50 disabled:pointer-events-none checked:bg-none checked:text-blue-600 checked:border-blue-600 focus:checked:border-blue-600 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-600 before:inline-block before:size-4 before:bg-white checked:before:bg-blue-200 before:translate-x-0 checked:before:translate-x-full before:rounded-full before:shadow before:transform before:ring-0 before:transition before:ease-in-out before:duration-200 dark:before:bg-gray-400 dark:checked:before:bg-blue-200" checked>';
-                                    } else {
-                                        echo '<input type="checkbox" id="hs-xs-switch" data-userid="' . $row['UserID'] . '" class="relative w-[35px] h-[21px] bg-gray-300 border-transparent text-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:ring-none disabled:opacity-50 disabled:pointer-events-none checked:bg-none checked:text-blue-600 checked:border-blue-600 focus:checked:border-blue-600 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-600 before:inline-block before:size-4 before:bg-white checked:before:bg-blue-200 before:translate-x-0 checked:before:translate-x-full before:rounded-full before:shadow before:transform before:ring-0 before:transition before:ease-in-out before:duration-200 dark:before:bg-gray-400 dark:checked:before:bg-blue-200">';
-                                    }
-                                    echo '</div>';
-                                    echo '</div>';
-                                    echo '</td>';
-
-
-                                    echo   '<td class="size-px whitespace-nowrap">';
-                                    echo      '<div class="px-6 py-3">';
-                                    echo          '<span class="text-sm text-gray-500">' . $row['RegistrationDate'] . '</span>';
-                                    echo      '</div>';
-                                    echo  '</td>';
-                                    echo '<td class="size-px whitespace-nowrap">';
-                                    echo '<div class="px-6 py-1.5">';
-                                    echo '<a class="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#">Edit</a>';
-                                    echo '</div>';
-                                    echo '</td>';
-
-                                    echo '</tr>';
+                                    echo '</tbody>';
+                                } else {
+                                    echo "Error: " . mysqli_error($conn);
                                 }
-                                echo '</tbody>';
-                            } else {
-                                echo "Error: " . mysqli_error($conn);
-                            }
-                            mysqli_close($conn);
-                            ?>
-                        </table>
-                        <!-- End Table -->
+                                mysqli_close($conn);
+                                ?>
+                            </table>
+                            <!-- End Table -->
+                        </div>
                     </div>
                 </div>
             </div>
+            <!-- End Card -->
         </div>
-        <!-- End Card -->
+        <!-- End Table Section -->
     </div>
-    <!-- End Table Section -->
-      </div>   
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const checkboxes = document.querySelectorAll('#hs-xs-switch');
