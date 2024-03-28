@@ -34,15 +34,15 @@
                         <input type="text" id="pin4" class="block w-[38px] text-center border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" data-hs-pin-input-item>
                     </div>
                 </div>
-                
             </div>
         </div>
+    </div>
     </div>
     <script>
         // Function to check if the entered pin is correct
         function verifyPin() {
             var enteredPin = document.getElementById("pin1").value + document.getElementById("pin2").value + document.getElementById("pin3").value + document.getElementById("pin4").value;
-            var correctPin = "2005"; // Hardcoded correct pin
+            var correctPin = "8520"; // Hardcoded correct pin
 
             if (enteredPin === correctPin) {
                 window.location.href = "../register.php"; // Redirect to register.php if the pin is correct
@@ -664,10 +664,40 @@
                                 <div>
                                     <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">
                                         Users
+
                                     </h2>
 
                                 </div>
+                                <?php
+                                // Check if a message is passed as a query parameter
+                                if (isset($_GET['message'])) {
+                                    $message = $_GET['message'];
+                                    // Check if the message is a success or an error
+                                    $alertClass = strpos($message, 'successfully') !== false ? 'bg-teal-50 border border-teal-200 text-sm text-teal-800 rounded-lg p-4 dark:bg-teal-800/10 dark:border-teal-900 dark:text-teal-500' : 'bg-red-50 border border-red-200 text-sm text-red-800 rounded-lg p-4 dark:bg-red-800/10 dark:border-red-900 dark:text-red-500';
+                                    // Display the message with the specified style
+                                    echo '<div id="dismiss-alert" class="hs-removing:translate-x-5 hs-removing:opacity-0 transition duration-300 ' . $alertClass . '" role="alert">';
+                                    echo '<div class="flex">';
+                                    echo '<div class="flex-shrink-0">';
+                                    echo '<svg class="flex-shrink-0 size-4 text-blue-600 mt-1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>';
+                                    echo '</div>';
+                                    echo '<div class="ms-2">';
+                                    echo '<div class="text-sm font-medium">';
+                                    echo htmlspecialchars($message);
+                                    echo '</div>';
+                                    echo '</div>';
+
+                                    echo '</div>';
+                                    echo '</div>';
+                                }
+                                ?>
+
                                 <div>
+                                    <div class="inline-flex gap-x-2" data-modal-target="medium-modal" data-modal-toggle="medium-modal">
+                                        <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#"><!--- ../register.php" Add user button -->
+
+                                            Update Password
+                                        </a>
+                                    </div>
                                     <div class="inline-flex gap-x-2" data-modal-target="popup-modal" data-modal-toggle="popup-modal">
                                         <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#"><!--- ../register.php" Add user button -->
                                             <svg class="flex-shrink-0 size-3" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -683,6 +713,8 @@
                                 <div class="relative w-full max-w-lg max-h-full">
                                     <!-- Modal content -->
                                     <main class="w-full max-w-md mx-auto p-6">
+
+
                                         <div class="mt-7 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700">
                                             <div class="p-4 sm:p-7">
                                                 <div class="text-center">
@@ -692,32 +724,70 @@
 
                                                 <div class="mt-5">
                                                     <!-- Form -->
-                                                    <form>
+                                                    <form method="POST" action="update_password.php" id="update-password-form">
                                                         <div class="grid gap-y-4">
-                                                            <!-- Form Group -->
+                                                            <!-- Username -->
                                                             <div>
-                                                                <label for="text" class="block text-sm mb-2 dark:text-white">New Password</label>
+                                                                <label for="username" class="block text-sm mb-2 dark:text-white">Username</label>
+                                                                <input type="text" id="username" name="username" class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" required>
+                                                            </div>
+                                                            <!-- End Username -->
+
+                                                            <!-- New Password -->
+                                                            <div>
+                                                                <label for="new_password" class="block text-sm mb-2 dark:text-white">New Password</label>
                                                                 <div class="relative">
-                                                                    <input type="text" id="text" name="text" class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" required aria-describedby="email-error">
-                                                                    <div class="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
-                                                                        <svg class="size-5 text-red-500" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
-                                                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-                                                                        </svg>
-                                                                    </div>
+                                                                    <input type="password" id="new_password" name="new_password" class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" required aria-describedby="new_password_error">
                                                                 </div>
                                                             </div>
-                                                            <!-- End Form Group -->
+                                                            <!-- End New Password -->
 
+                                                            <!-- Confirm Password -->
+                                                            <div>
+                                                                <label for="confirm_password" class="block text-sm mb-2 dark:text-white">Confirm New Password</label>
+                                                                <input type="password" id="confirm_password" name="confirm_password" class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" required aria-describedby="confirm_password_error">
+                                                            </div>
+                                                            <!-- End Confirm Password -->
                                                             <button type="submit" class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">Reset password</button>
                                                         </div>
                                                     </form>
                                                     <!-- End Form -->
+
                                                 </div>
                                             </div>
                                         </div>
                                     </main>
                                 </div>
                             </div>
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    const updateButtons = document.querySelectorAll('.update-password-btn');
+                                    const modalForm = document.querySelector('#update-password-form');
+                                    const userIdInput = document.querySelector('#user_id');
+
+                                    updateButtons.forEach(button => {
+                                        button.addEventListener('click', function() {
+                                            const userId = button.dataset.userid;
+                                            console.log('User ID:', userId); // Log the user ID to the console
+
+                                            // Set the user ID in the hidden input field of the modal form
+                                            userIdInput.value = userId;
+
+                                            // Open or show the modal
+                                            const modal = document.querySelector(button.dataset.modalTarget);
+                                            modal.classList.add('open');
+                                        });
+                                    });
+
+                                    // Optional: Close the modal when the form is submitted
+                                    modalForm.addEventListener('submit', function() {
+                                        const modal = document.querySelector('#medium-modal');
+                                        modal.classList.remove('open');
+                                    });
+                                });
+                            </script>
+
+
                             <!-- Table -->
                             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                 <thead class="bg-gray-50 dark:bg-slate-800">
@@ -738,13 +808,13 @@
                                             </div>
                                         </th>
 
-                                        <th scope="col" class="px-6 py-3 text-start">
+                                        <!-- <th scope="col" class="px-6 py-3 text-start">
                                             <div class="flex items-center gap-x-2">
                                                 <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
                                                     Password
                                                 </span>
                                             </div>
-                                        </th>
+                                        </th> -->
 
                                         <th scope="col" class="px-6 py-3 text-start">
                                             <div class="flex items-center gap-x-2">
@@ -799,13 +869,15 @@
                                         echo '</div>';
                                         echo '</td>';
 
-                                        echo '<td class="h-px w-72 whitespace-nowrap">';
-                                        echo '<div class="px-6 py-3">';
-                                        echo '<span class="block text-sm font-semibold text-gray-800 dark:text-gray-200 ">';
-                                        echo '<button data-modal-target="medium-modal" data-modal-toggle="medium-modal" class="bg-blue-700 p-2 text-white rounded-xl ">Update Password</button>';
-                                        echo '</span>';
-                                        echo '</div>';
-                                        echo '</td>';
+                                        // echo '<td class="h-px w-72 whitespace-nowrap">';
+                                        // echo '<div class="px-6 py-3">';
+                                        // echo '<span class="block text-sm font-semibold text-gray-800 dark:text-gray-200">';
+                                        // echo '<button data-userid="' . $userId . '" data-modal-target="medium-modal" data-modal-toggle="medium-modal" class="bg-blue-700 p-2 text-white rounded-xl update-password-btn">Update Password</button>';
+                                        // echo '</span>';
+                                        // echo '</div>';
+                                        // echo '</td>';
+
+
                                         echo '<td class="size-px whitespace-nowrap">';
                                         echo '<div class="px-6 py-3">';
                                         echo '<span class="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium ';
@@ -867,21 +939,57 @@
                 </div>
             </div>
             <!-- End Card -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const hardcodedPassword = '1234'; // Hardcoded password for validation
+
+                    // Select all buttons with the data-modal-target attribute
+                    const updatePasswordBtns = document.querySelectorAll('[data-modal-target="medium-modal"]');
+                    updatePasswordBtns.forEach(button => {
+                        button.addEventListener('click', function(event) {
+                            event.preventDefault(); // Prevent the default behavior of the button
+
+                            // Ask for password validation before showing the modal
+                            const enteredPassword = prompt('Please enter your password:');
+                            if (enteredPassword === hardcodedPassword) {
+                                // If the entered password matches the hardcoded password, show the modal
+                                const modal = document.getElementById('medium-modal');
+                                modal.classList.remove('hidden'); // Show the modal
+                                modal.focus(); // Set focus to the modal
+                            } else {
+                                alert('Incorrect password. Redirecting to dashboard...');
+                                window.location.href = 'dashboard.php'; // Redirect to dashboard.php
+                            }
+                        });
+                    });
+                });
+            </script>
         </div>
         <!-- End Table Section -->
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const hardcodedPin = '1234'; // Hardcoded PIN for validation
+
             const checkboxes = document.querySelectorAll('#hs-xs-switch');
             checkboxes.forEach(checkbox => {
                 checkbox.addEventListener('click', function() {
                     const userID = this.getAttribute('data-userid');
-                    const isChecked = this.checked ? 1 : 0;
-                    updateSessionActive(userID, isChecked);
+                    // Ask for PIN validation before toggling the checkbox
+                    const enteredPin = prompt('Please enter your PIN:');
+                    if (enteredPin === hardcodedPin) {
+                        // If the entered PIN matches the hardcoded PIN, proceed with toggling the checkbox
+                        const isChecked = this.checked ? 1 : 0;
+                        toggleSessionActive(userID, isChecked);
+                    } else {
+                        alert('Invalid PIN. Access denied.');
+                        // Uncheck the checkbox to revert the change
+                        this.checked = !this.checked;
+                    }
                 });
             });
 
-            function updateSessionActive(userID, isChecked) {
+            function toggleSessionActive(userID, isChecked) {
                 // Send AJAX request to update SessionActive value in the database
                 const xhr = new XMLHttpRequest();
                 xhr.open('POST', 'update_session_active.php', true);
