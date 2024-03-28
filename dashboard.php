@@ -17,6 +17,72 @@
 </head>
 
 <body class="bg-gray-50 dark:bg-slate-900">
+    <div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-w-md max-h-full">
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="popup-modal">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+                <div class="p-4 md:p-5 text-center">
+                    <div class="flex justify-center space-x-3 mt-4" data-hs-pin-input>
+                        <input type="text" id="pin1" class="block w-[38px] text-center border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" data-hs-pin-input-item autofocus>
+                        <input type="text" id="pin2" class="block w-[38px] text-center border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" data-hs-pin-input-item>
+                        <input type="text" id="pin3" class="block w-[38px] text-center border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" data-hs-pin-input-item>
+                        <input type="text" id="pin4" class="block w-[38px] text-center border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" data-hs-pin-input-item>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <script>
+        // Function to check if the entered pin is correct
+        function verifyPin() {
+            var enteredPin = document.getElementById("pin1").value + document.getElementById("pin2").value + document.getElementById("pin3").value + document.getElementById("pin4").value;
+            var correctPin = "1234"; // Hardcoded correct pin
+
+            if (enteredPin === correctPin) {
+                window.location.href = "../register.php"; // Redirect to register.php if the pin is correct
+            } else {
+                alert("Incorrect PIN. Please try again.");
+                // Clear the input fields for another attempt
+                document.getElementById("pin1").value = "";
+                document.getElementById("pin2").value = "";
+                document.getElementById("pin3").value = "";
+                document.getElementById("pin4").value = "";
+            }
+        }
+
+        // Add event listener to each input field to check for Enter key press
+        document.getElementById("pin1").addEventListener("keyup", function(event) {
+            if (event.key === "Enter") {
+                document.getElementById("pin2").focus(); // Move focus to the next input field
+            }
+        });
+
+        document.getElementById("pin2").addEventListener("keyup", function(event) {
+            if (event.key === "Enter") {
+                document.getElementById("pin3").focus(); // Move focus to the next input field
+            }
+        });
+
+        document.getElementById("pin3").addEventListener("keyup", function(event) {
+            if (event.key === "Enter") {
+                document.getElementById("pin4").focus(); // Move focus to the next input field
+            }
+        });
+
+        document.getElementById("pin4").addEventListener("keyup", function(event) {
+            if (event.key === "Enter") {
+                verifyPin(); // Call the verifyPin function when Enter key is pressed in the last input field
+            }
+        });
+    </script>
+
+
     <!-- ========== HEADER ========== -->
     <header class="sticky top-0 inset-x-0 flex flex-wrap sm:justify-start sm:flex-nowrap z-[48] w-full bg-white border-b text-sm py-2.5 sm:py-4 lg:ps-64 dark:bg-gray-800 dark:border-gray-700">
         <nav class="flex basis-full items-center w-full mx-auto px-4 sm:px-6 md:px-8" aria-label="Global">
@@ -602,8 +668,8 @@
 
                                 </div>
                                 <div>
-                                    <div class="inline-flex gap-x-2">
-                                        <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="../register.php">
+                                    <div class="inline-flex gap-x-2" data-modal-target="popup-modal" data-modal-toggle="popup-modal">
+                                        <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#"><!--- ../register.php" Add user button -->
                                             <svg class="flex-shrink-0 size-3" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
                                                 <path d="M2.63452 7.50001L13.6345 7.5M8.13452 13V2" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
                                             </svg>
