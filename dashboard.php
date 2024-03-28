@@ -101,22 +101,34 @@
                 </div>
 
                 <div class="hidden sm:block">
-                    <form method="POST" action="">
+                    <form method="POST" action="" class="flex items-center space-x-4">
                         <label for="search" class="sr-only">Search</label>
                         <div class="relative">
-                            <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-4">
+                            <div class="absolute inset-y-0 left-0 flex items-center pointer-events-none z-20 ps-4">
                                 <svg class="flex-shrink-0 size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <circle cx="11" cy="11" r="8" />
                                     <path d="m21 21-4.3-4.3" />
                                 </svg>
                             </div>
-                            <input type="text" id="search" name="search" class="py-2 px-4 ps-11 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" placeholder="Search">
-
+                            <input type="text" id="search" name="search" class="py-2 px-4 ps-11 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" placeholder="Search Username">
                         </div>
 
-                    </form>
-                </div>
+                        <select name="category" class="py-2 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600">
+                            <option value="" selected>Select Category</option>
+                            <option value="HDFC Physical">HDFC Physical</option>
+                            <option value="HDFC Adobe Pan India">HDFC Adobe Pan India</option>
+                            <option value="IDFC Vkyc Old">IDFC Vkyc Old</option>
+                            <option value="IDFC Vkyc New">IDFC Vkyc New</option>
+                            <option value="LIC">LIC</option>
+                            <option value="Loan">Loan</option>
+                            <option value="IDFC Drop-Off New">IDFC Drop-Off New</option>
+                            <option value="IDFC Drop-Off Old">IDFC Drop-Off Old</option>
+                        </select>
 
+                        <button type="submit" class="py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Search</button>
+                    </form>
+
+                </div>
                 <div class="flex flex-row items-center justify-end gap-2">
                     <div class="hs-dropdown relative inline-flex [--placement:bottom-right]">
                         <button id="hs-dropdown-with-header" type="button" class="w-[2.375rem] h-[2.375rem] inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
@@ -143,20 +155,6 @@
                 </svg>
             </button>
             <!-- End Navigation Toggle -->
-
-            <!-- Breadcrumb -->
-            <ol class="ms-3 flex items-center whitespace-nowrap" aria-label="Breadcrumb">
-                <li class="flex items-center text-sm text-gray-800 dark:text-gray-400">
-                    Application Layout
-                    <svg class="flex-shrink-0 mx-3 overflow-visible size-2.5 text-gray-400 dark:text-gray-600" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M5 1L10.6869 7.16086C10.8637 7.35239 10.8637 7.64761 10.6869 7.83914L5 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                    </svg>
-                </li>
-                <li class="text-sm font-semibold text-gray-800 truncate dark:text-gray-400" aria-current="page">
-                    Dashboard
-                </li>
-            </ol>
-            <!-- End Breadcrumb -->
         </div>
     </div>
     <!-- End Sidebar Toggle -->
@@ -207,8 +205,11 @@
         $search = isset($_POST['search']) ? $_POST['search'] : '';
         $search = $conn->real_escape_string($search);
 
-        // Query to fetch counts for the searched username
-        $query = "SELECT Disposition, COUNT(*) AS Count FROM FormData WHERE Username = '$search' GROUP BY Disposition";
+        $category = isset($_POST['category']) ? $_POST['category'] : '';
+        $category = $conn->real_escape_string($category);
+
+        // Query to fetch counts for the searched username and selected category
+        $query = "SELECT Disposition, COUNT(*) AS Count FROM FormData WHERE Username = '$search' AND Category = '$category' GROUP BY Disposition";
         $result = $conn->query($query);
 
         // Check if query was successful
@@ -251,6 +252,7 @@
     // Close the database conn
     $conn->close();
     ?>
+
 
 
     <div class="w-full pt-10 px-4 sm:px-6 md:px-8 lg:ps-72">
