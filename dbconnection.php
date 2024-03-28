@@ -1,10 +1,10 @@
 <?php
 
 // Database connection parameters 156.67.222.1
-$host = '156.67.222.1';
-$username = 'u443752012_niriadmin';
-$password = 'Niriadmin@2023';
-$database = 'u443752012_niridb';
+$host = 'yourhost';
+$username = 'dbusername';
+$password = 'dbpass';
+$database = 'dbname';
 
 // Create a connection
 $conn = mysqli_connect($host, $username, $password, $database);
