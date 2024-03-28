@@ -42,7 +42,7 @@
         // Function to check if the entered pin is correct
         function verifyPin() {
             var enteredPin = document.getElementById("pin1").value + document.getElementById("pin2").value + document.getElementById("pin3").value + document.getElementById("pin4").value;
-            var correctPin = "1234"; // Hardcoded correct pin
+            var correctPin = "2005"; // Hardcoded correct pin
 
             if (enteredPin === correctPin) {
                 window.location.href = "../register.php"; // Redirect to register.php if the pin is correct
