@@ -14,6 +14,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
     <link href="./src/output.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body class="bg-gray-50 dark:bg-slate-900">
@@ -129,8 +130,11 @@
                     </form>
 
                 </div>
+
                 <div class="flex flex-row items-center justify-end gap-2">
                     <div class="hs-dropdown relative inline-flex [--placement:bottom-right]">
+
+                        &nbsp; &nbsp;
                         <button id="hs-dropdown-with-header" type="button" class="w-[2.375rem] h-[2.375rem] inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
                             <img class="inline-block size-[38px] rounded-full ring-2 ring-white dark:ring-gray-800" src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=320&h=320&q=80" alt="Image Description">
                         </button>
@@ -693,7 +697,44 @@
                                 }
                                 ?>
 
+
                                 <div>
+                                    <div class="inline-flex gap-x-2">
+                                        <label for="toggle" class="flex items-center cursor-pointer">
+                                            <span class="ml-3 text-gray-700 font-medium">Personal Network</span>&nbsp;&nbsp;
+                                            <span class="relative">
+                                                <input type="checkbox" id="ip-toggle" class="relative w-[3.25rem] h-7 p-px bg-green-500 border-transparent text-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:ring-blue-600 disabled:opacity-50 disabled:pointer-events-none checked:bg-none checked:text-blue-600 checked:border-blue-600 focus:checked:border-blue-600 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-600 before:inline-block before:size-6 before:bg-white checked:before:bg-blue-200 before:translate-x-0 checked:before:translate-x-full before:rounded-full before:shadow before:transform before:ring-0 before:transition before:ease-in-out before:duration-200 dark:before:bg-gray-400 dark:checked:before:bg-blue-200">
+                                            </span>
+                                            <span class="ml-3 text-gray-700 font-medium">Wifi</span>
+                                        </label>
+                                    </div>
+
+                                    <script>
+                                        $(document).ready(function() {
+                                            $('#ip-toggle').change(function() {
+                                                var isChecked = $(this).prop('checked') ? 1 : 0;
+                                                updateIPStatus(isChecked);
+                                            });
+
+                                            function updateIPStatus(status) {
+                                                $.ajax({
+                                                    type: 'POST',
+                                                    url: 'update_ip_status.php', // Replace this with your server-side script URL
+                                                    data: {
+                                                        ipStatus: status
+                                                    },
+                                                    success: function(response) {
+                                                        console.log('IP Status updated successfully');
+                                                    },
+                                                    error: function(xhr, status, error) {
+                                                        console.error('Error updating IP Status:', error);
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    </script>
+
+                                    &nbsp;
                                     <div class="inline-flex gap-x-2" data-modal-target="medium-modal" data-modal-toggle="medium-modal">
                                         <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#"><!--- ../register.php" Add user button -->
 
