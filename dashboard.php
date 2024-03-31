@@ -104,6 +104,7 @@
                 <div class="hidden sm:block">
                     <form method="POST" action="" class="flex items-center space-x-4">
                         <label for="search" class="sr-only">Search</label>
+                        <input type="checkbox" class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800" id="search_name" name="search_name" value="1">
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 flex items-center pointer-events-none z-20 ps-4">
                                 <svg class="flex-shrink-0 size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -113,7 +114,7 @@
                             </div>
                             <input type="text" id="search" name="search" class="py-2 px-4 ps-11 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" placeholder="Search Username">
                         </div>
-
+                        <input type="checkbox" class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800" id="search_category" name="search_category" value="1">
                         <select name="category" class="py-2 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600">
                             <option value="" selected>Select Category</option>
                             <option value="HDFC Physical">HDFC Physical</option>
@@ -126,6 +127,31 @@
                             <option value="IDFC Drop-Off Old">IDFC Drop-Off Old</option>
                         </select>
 
+                        <input type="checkbox" class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800" id="search_date" name="search_date" value="1">
+                        <div date-rangepicker class="flex items-center">
+                            <div class="relative">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                    </svg>
+                                </div>
+                                <input name="start" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date start">
+                            </div>
+                            <span class="mx-4 text-gray-500">to</span>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                    </svg>
+                                </div>
+                                <input name="end" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date end">
+                            </div>
+                        </div>
+                       
+   
+
+   
+    
                         <button type="submit" class="py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Search</button>
                     </form>
 
@@ -201,61 +227,91 @@
     <!-- Chart Section -->
 
     <?php
-    // Database conn
-    include 'dbconnection.php';
+// Database conn
+include 'dbconnection.php';
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Process the form data and sanitize input
-        $search = isset($_POST['search']) ? $_POST['search'] : '';
-        $search = $conn->real_escape_string($search);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $search_date = isset($_POST['search_date']) ? $_POST['search_date'] : null;
+    $search_name = isset($_POST['search_name']) ? $_POST['search_name'] : null;
+    $search_category = isset($_POST['search_category']) ? $_POST['search_category'] : null;
 
-        $category = isset($_POST['category']) ? $_POST['category'] : '';
-        $category = $conn->real_escape_string($category);
+    // Process the form data and sanitize input
+    $search = isset($_POST['search']) ? $_POST['search'] : '';
+    $search = $conn->real_escape_string($search);
 
-        // Query to fetch counts for the searched username and selected category
-        $query = "SELECT Disposition, COUNT(*) AS Count FROM FormData WHERE Username = '$search' AND Category = '$category' GROUP BY Disposition";
-        $result = $conn->query($query);
+    $category = isset($_POST['category']) ? $_POST['category'] : '';
+    $category = $conn->real_escape_string($category);
 
-        // Check if query was successful
-        if ($result) {
-            // Initialize an array to store the counts
-            $counts = array();
+    $start_date = isset($_POST['start']) ? $_POST['start'] : '';
+    $end_date = isset($_POST['end']) ? $_POST['end'] : '';
 
-            // Fetch counts and store in the array
-            while ($row = $result->fetch_assoc()) {
-                $counts[$row['Disposition']] = $row['Count'];
-            }
+    // Validate and format date inputs (assuming date format is YYYY-MM-DD)
+    $start_date = date('Y-m-d', strtotime($start_date));
+    $end_date = date('Y-m-d', strtotime($end_date));
 
-            // Display counts in the cards
-        } else {
-            // Query failed, handle the error
-            echo "Error: " . $conn->error;
-        }
-    } else {
-        // Fetch the count of each disposition value for all users
-        $query = "SELECT Disposition, COUNT(*) AS Count FROM FormData GROUP BY Disposition";
-        $result = $conn->query($query);
+    // Query construction based on selected search options
+    $query = "SELECT Disposition, COUNT(*) AS Count 
+              FROM FormData 
+              WHERE 1=1";
 
-        // Check if query was successful
-        if ($result) {
-            // Initialize an array to store the counts
-            $counts = array();
-
-            // Fetch counts and store in the array
-            while ($row = $result->fetch_assoc()) {
-                $counts[$row['Disposition']] = $row['Count'];
-            }
-
-            // Display counts in the cards
-        } else {
-            // Query failed, handle the error
-            echo "Error: " . $conn->error;
-        }
+    if ($search_name) {
+        $query .= " AND username = '$search'";
     }
 
-    // Close the database conn
-    $conn->close();
-    ?>
+    if ($search_category) {
+        $query .= " AND Category = '$category'";
+    }
+
+    if ($search_date) {
+        $query .= " AND DispoUpdate BETWEEN '$start_date' AND '$end_date'";
+    }
+
+    $query .= " GROUP BY Disposition";
+
+    $result = $conn->query($query);
+
+    // Check if query was successful
+    if ($result) {
+        // Initialize an array to store the counts
+        $counts = array();
+
+        // Fetch counts and store in the array
+        while ($row = $result->fetch_assoc()) {
+            $counts[$row['Disposition']] = $row['Count'];
+        }
+
+        // Display counts in the cards
+    } else {
+        // Query failed, handle the error
+        echo "Error: " . $conn->error;
+    }
+} else {
+    // Fetch the count of each disposition value for all users
+    $query = "SELECT Disposition, COUNT(*) AS Count FROM FormData GROUP BY Disposition";
+    $result = $conn->query($query);
+
+    // Check if query was successful
+    if ($result) {
+        // Initialize an array to store the counts
+        $counts = array();
+
+        // Fetch counts and store in the array
+        while ($row = $result->fetch_assoc()) {
+            $counts[$row['Disposition']] = $row['Count'];
+        }
+
+        // Display counts in the cards
+    } else {
+        // Query failed, handle the error
+        echo "Error: " . $conn->error;
+    }
+}
+
+// Close the database conn
+$conn->close();
+?>
+
+
 
 
 
@@ -711,10 +767,40 @@
 
                                     <script>
                                         $(document).ready(function() {
-                                            $('#ip-toggle').change(function() {
-                                                var isChecked = $(this).prop('checked') ? 1 : 0;
-                                                updateIPStatus(isChecked);
+                                            var isChecked = false;
+
+                                            // Check the IP status on page load
+                                            $.ajax({
+                                                type: 'GET',
+                                                url: 'get_ip_status.php', // Replace this with your server-side script URL to get the IP status
+                                                success: function(response) {
+                                                    var ipStatus = parseInt(response); // Assuming the server responds with the IP status as a number
+                                                    isChecked = ipStatus === 1;
+                                                    $('#ip-toggle').prop('checked', isChecked);
+                                                },
+                                                error: function(xhr, status, error) {
+                                                    console.error('Error getting IP Status:', error);
+                                                }
                                             });
+
+                                            $('#ip-toggle').change(function() {
+                                                isChecked = $(this).prop('checked');
+                                                if (isChecked) {
+                                                    promptForPasswordAndToggle();
+                                                } else {
+                                                    promptForPasswordAndToggle();
+                                                }
+                                            });
+
+                                            function promptForPasswordAndToggle() {
+                                                var password = prompt('Enter password:');
+                                                if (password !== null && password.trim() === 'proteinshake@2023') {
+                                                    updateIPStatus(isChecked ? 1 : 0);
+                                                } else {
+                                                    alert('Incorrect password. Please try again.');
+                                                    $('#ip-toggle').prop('checked', !isChecked); // Revert checkbox state
+                                                }
+                                            }
 
                                             function updateIPStatus(status) {
                                                 $.ajax({
@@ -733,6 +819,9 @@
                                             }
                                         });
                                     </script>
+
+
+
 
                                     &nbsp;
                                     <div class="inline-flex gap-x-2" data-modal-target="medium-modal" data-modal-toggle="medium-modal">
@@ -1047,7 +1136,7 @@
             }
         });
     </script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
     <script src="./node_modules/preline/dist/preline.js"></script>
 </body>
