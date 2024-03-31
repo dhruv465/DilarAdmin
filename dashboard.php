@@ -147,11 +147,11 @@
                                 <input name="end" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date end">
                             </div>
                         </div>
-                       
-   
 
-   
-    
+
+
+
+
                         <button type="submit" class="py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Search</button>
                     </form>
 
@@ -227,89 +227,89 @@
     <!-- Chart Section -->
 
     <?php
-// Database conn
-include 'dbconnection.php';
+    // Database conn
+    include 'dbconnection.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $search_date = isset($_POST['search_date']) ? $_POST['search_date'] : null;
-    $search_name = isset($_POST['search_name']) ? $_POST['search_name'] : null;
-    $search_category = isset($_POST['search_category']) ? $_POST['search_category'] : null;
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $search_date = isset($_POST['search_date']) ? $_POST['search_date'] : null;
+        $search_name = isset($_POST['search_name']) ? $_POST['search_name'] : null;
+        $search_category = isset($_POST['search_category']) ? $_POST['search_category'] : null;
 
-    // Process the form data and sanitize input
-    $search = isset($_POST['search']) ? $_POST['search'] : '';
-    $search = $conn->real_escape_string($search);
+        // Process the form data and sanitize input
+        $search = isset($_POST['search']) ? $_POST['search'] : '';
+        $search = $conn->real_escape_string($search);
 
-    $category = isset($_POST['category']) ? $_POST['category'] : '';
-    $category = $conn->real_escape_string($category);
+        $category = isset($_POST['category']) ? $_POST['category'] : '';
+        $category = $conn->real_escape_string($category);
 
-    $start_date = isset($_POST['start']) ? $_POST['start'] : '';
-    $end_date = isset($_POST['end']) ? $_POST['end'] : '';
+        $start_date = isset($_POST['start']) ? $_POST['start'] : '';
+        $end_date = isset($_POST['end']) ? $_POST['end'] : '';
 
-    // Validate and format date inputs (assuming date format is YYYY-MM-DD)
-    $start_date = date('Y-m-d', strtotime($start_date));
-    $end_date = date('Y-m-d', strtotime($end_date));
+        // Validate and format date inputs (assuming date format is YYYY-MM-DD)
+        $start_date = date('Y-m-d', strtotime($start_date));
+        $end_date = date('Y-m-d', strtotime($end_date));
 
-    // Query construction based on selected search options
-    $query = "SELECT Disposition, COUNT(*) AS Count 
+        // Query construction based on selected search options
+        $query = "SELECT Disposition, COUNT(*) AS Count 
               FROM FormData 
               WHERE 1=1";
 
-    if ($search_name) {
-        $query .= " AND username = '$search'";
-    }
-
-    if ($search_category) {
-        $query .= " AND Category = '$category'";
-    }
-
-    if ($search_date) {
-        $query .= " AND DispoUpdate BETWEEN '$start_date' AND '$end_date'";
-    }
-
-    $query .= " GROUP BY Disposition";
-
-    $result = $conn->query($query);
-
-    // Check if query was successful
-    if ($result) {
-        // Initialize an array to store the counts
-        $counts = array();
-
-        // Fetch counts and store in the array
-        while ($row = $result->fetch_assoc()) {
-            $counts[$row['Disposition']] = $row['Count'];
+        if ($search_name) {
+            $query .= " AND username = '$search'";
         }
 
-        // Display counts in the cards
-    } else {
-        // Query failed, handle the error
-        echo "Error: " . $conn->error;
-    }
-} else {
-    // Fetch the count of each disposition value for all users
-    $query = "SELECT Disposition, COUNT(*) AS Count FROM FormData GROUP BY Disposition";
-    $result = $conn->query($query);
-
-    // Check if query was successful
-    if ($result) {
-        // Initialize an array to store the counts
-        $counts = array();
-
-        // Fetch counts and store in the array
-        while ($row = $result->fetch_assoc()) {
-            $counts[$row['Disposition']] = $row['Count'];
+        if ($search_category) {
+            $query .= " AND Category = '$category'";
         }
 
-        // Display counts in the cards
-    } else {
-        // Query failed, handle the error
-        echo "Error: " . $conn->error;
-    }
-}
+        if ($search_date) {
+            $query .= " AND DispoUpdate BETWEEN '$start_date' AND '$end_date'";
+        }
 
-// Close the database conn
-$conn->close();
-?>
+        $query .= " GROUP BY Disposition";
+
+        $result = $conn->query($query);
+
+        // Check if query was successful
+        if ($result) {
+            // Initialize an array to store the counts
+            $counts = array();
+
+            // Fetch counts and store in the array
+            while ($row = $result->fetch_assoc()) {
+                $counts[$row['Disposition']] = $row['Count'];
+            }
+
+            // Display counts in the cards
+        } else {
+            // Query failed, handle the error
+            echo "Error: " . $conn->error;
+        }
+    } else {
+        // Fetch the count of each disposition value for all users
+        $query = "SELECT Disposition, COUNT(*) AS Count FROM FormData GROUP BY Disposition";
+        $result = $conn->query($query);
+
+        // Check if query was successful
+        if ($result) {
+            // Initialize an array to store the counts
+            $counts = array();
+
+            // Fetch counts and store in the array
+            while ($row = $result->fetch_assoc()) {
+                $counts[$row['Disposition']] = $row['Count'];
+            }
+
+            // Display counts in the cards
+        } else {
+            // Query failed, handle the error
+            echo "Error: " . $conn->error;
+        }
+    }
+
+    // Close the database conn
+    $conn->close();
+    ?>
 
 
 
