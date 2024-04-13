@@ -1,18 +1,6 @@
 <?php
 // Database connection parameters
-$host = '156.67.222.1';
-$username = 'u443752012_niriadmin';
-$password = 'Niriadmin@2023';
-$database = 'u443752012_niridb';
-
-// Create a connection
-$conn = mysqli_connect($host, $username, $password, $database);
-
-// Check the connection
-if (!$conn) {
-    http_response_code(500); // Internal Server Error
-    exit('Error connecting to the database');
-}
+include("dbconnection.php");
 
 // Query to get the IP status
 $sql = "SELECT IP_Status FROM Users LIMIT 1";

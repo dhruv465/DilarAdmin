@@ -1101,23 +1101,12 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const hardcodedPin = '1234'; // Hardcoded PIN for validation
-
             const checkboxes = document.querySelectorAll('#hs-xs-switch');
             checkboxes.forEach(checkbox => {
                 checkbox.addEventListener('click', function() {
                     const userID = this.getAttribute('data-userid');
-                    // Ask for PIN validation before toggling the checkbox
-                    const enteredPin = prompt('Please enter your PIN:');
-                    if (enteredPin === hardcodedPin) {
-                        // If the entered PIN matches the hardcoded PIN, proceed with toggling the checkbox
-                        const isChecked = this.checked ? 1 : 0;
-                        toggleSessionActive(userID, isChecked);
-                    } else {
-                        alert('Invalid PIN. Access denied.');
-                        // Uncheck the checkbox to revert the change
-                        this.checked = !this.checked;
-                    }
+                    const isChecked = this.checked ? 1 : 0;
+                    toggleSessionActive(userID, isChecked);
                 });
             });
 
@@ -1136,6 +1125,7 @@
             }
         });
     </script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
     <script src="./node_modules/preline/dist/preline.js"></script>
